@@ -65,9 +65,10 @@
  *   $(document).bind('reveal.facebox', function() { ...stuff to do after the facebox and contents are revealed... })
  *
  */
+
 (function($) {
   $.facebox = function(data, klass) {
-    $.facebox.loading(data.settings || [])
+    $.facebox.loading()
 
     if (data.ajax) fillFaceboxFromAjax(data.ajax, klass)
     else if (data.image) fillFaceboxFromImage(data.image, klass)
@@ -84,8 +85,8 @@
     settings: {
       opacity      : 0.2,
       overlay      : true,
-      loadingImage : '<%= asset_path('facebox/loading.gif') %>',
-      closeImage   : '<%= asset_path('facebox/closelabel.png') %>',
+      loadingImage : '/assets/facebox/loading.gif',
+      closeImage   : '/assets/facebox/closelabel.png',
       imageTypes   : [ 'png', 'jpg', 'jpeg', 'gif' ],
       faceboxHtml  : '\
     <div id="facebox" style="display:none;"> \
@@ -97,18 +98,19 @@
     </div>'
     },
 
-    loading: function() {
+    loading: function(event) {
       init()
       if ($('#facebox .loading').length == 1) return true
       showOverlay()
 
       $('#facebox .content').empty().
         append('<div class="loading"><img src="'+$.facebox.settings.loadingImage+'"/></div>')
-
-      $('#facebox').show().css({
-        top:	getPageScroll()[1] + (getPageHeight() / 10),
-        left:	$(window).width() / 2 - ($('#facebox .popup').outerWidth(true) / 2)
-      })
+      // shepherd
+      $('#facebox').show().css(position(event));
+      // $('#facebox').show().css({
+      //   top:  getPageScroll()[1] + (getPageHeight() / 10),
+      //   left: $(window).width() / 2 - ($('#facebox .popup').outerWidth() / 2)
+      // })
 
       $(document).bind('keydown.facebox', function(e) {
         if (e.keyCode == 27) $.facebox.close()
@@ -141,8 +143,10 @@
 
     init(settings)
 
-    function clickHandler() {
-      $.facebox.loading(true)
+    function clickHandler(event) {
+      // shepherd
+      $.facebox.loading(event, true)
+      // $.facebox.loading(true)
 
       // support for rel="facebox.inline_popup" syntax, to add a class
       // also supports deprecated "facebox[.inline_popup]" syntax
@@ -196,7 +200,7 @@
     if (self.pageYOffset) {
       yScroll = self.pageYOffset;
       xScroll = self.pageXOffset;
-    } else if (document.documentElement && document.documentElement.scrollTop) {	 // Explorer 6 Strict
+    } else if (document.documentElement && document.documentElement.scrollTop) {   // Explorer 6 Strict
       yScroll = document.documentElement.scrollTop;
       xScroll = document.documentElement.scrollLeft;
     } else if (document.body) {// all other Explorers
@@ -209,7 +213,7 @@
   // Adapted from getPageSize() by quirksmode.com
   function getPageHeight() {
     var windowHeight
-    if (self.innerHeight) {	// all except Explorer
+    if (self.innerHeight) { // all except Explorer
       windowHeight = self.innerHeight;
     } else if (document.documentElement && document.documentElement.clientHeight) { // Explorer 6 Strict Mode
       windowHeight = document.documentElement.clientHeight;
@@ -260,7 +264,7 @@
   }
 
   function fillFaceboxFromAjax(href, klass) {
-    $.facebox.jqxhr = $.get(href, function(data) { $.facebox.reveal(data, klass) })
+    $.get(href, function(data) { $.facebox.reveal(data, klass) })
   }
 
   function skipOverlay() {
@@ -291,16 +295,24 @@
 
     return false
   }
+  // shepherd
+  function position(event){
+    var options = {};
+    var ref = $(event.target).attr('ref');
+    options.left = $(window).width() / 2 - ($('#facebox .popup').outerWidth() / 2);
+    if(ref=='eventY'){
+      options.top = event.pageY;
+    }else{
+      options.top = getPageScroll()[1] + (getPageHeight() / 10);
+    }
+    return options;
+  }
 
   /*
    * Bindings
    */
 
   $(document).bind('close.facebox', function() {
-    if ($.facebox.jqxhr) {
-      $.facebox.jqxhr.abort()
-      $.facebox.jqxhr = null
-    }
     $(document).unbind('keydown.facebox')
     $('#facebox').fadeOut(function() {
       $('#facebox .content').removeClass().addClass('content')

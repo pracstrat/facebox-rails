@@ -6,11 +6,11 @@ require 'facebox-rails/version'
 Gem::Specification.new do |s|
   s.name         = "facebox-rails"
   s.version      = Facebox::Rails::VERSION
-  s.authors      = ["beawesomeinstead"]
-  s.email        = "graf.otodrakula@gmail.com"
-  s.homepage     = "http://github.com/bai/facebox-rails"
-  s.summary      = "Use Facebox with Rails 3"
-  s.description  = "This gem provides Facebox for your Rails 3 application."
+  s.authors      = ["xinlangzi"]
+  s.email        = "jordan@51shepherd.com"
+  s.homepage     = "https://github.com/pracstrat/facebox-rails"
+  s.summary      = "Use Facebox with Rails 3+"
+  s.description  = "This gem provides Facebox for your Rails 3+ application."
 
   s.required_rubygems_version = ">= 1.3.6"
 
