@@ -36,14 +36,16 @@
 }
 
 #facebox .close{
-  position:absolute;
-  top:5px;
-  right:5px;
-  padding:2px;
-  background:#fff;
+  line-height: 12px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  padding: 2px;
+  background: transparent;
 }
+
 #facebox .close img{
-  opacity:0.3;
+  opacity:0.5;
 }
 #facebox .close:hover img{
   opacity:1.0;
