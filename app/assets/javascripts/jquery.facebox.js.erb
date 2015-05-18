@@ -300,18 +300,14 @@
   // shepherd
   function position(event){
     var options = {};
-    console.log($(event.target));
     var ref = $(event.target).attr('ref');
     options.left = $(window).width() / 2 - ($('#facebox .popup').outerWidth() / 2);
-    console.log(ref);
     if(ref=='eventY'){
       options.top = event.pageY;
     }else if(ref=='top'){
-      console.log("Should call here");
       options.top = 0;
       $('#facebox').css('max-height', '100%');
     }else{
-      console.log("Should not call here");
       options.top = getPageScroll()[1] + (getPageHeight() / 10);
     }
     return options;
