@@ -2,11 +2,11 @@
 
 A gemified Facebox for Rails.
 
-# Rails 3.1
+# Rails + 3.1
 
 Add it to your Gemfile:
 
-    gem 'facebox-rails'
+    gem 'facebox-rails', github: 'pracstrat/facebox-rails'
 
 Include in your `app/assets/stylesheets/application.css`:
 
